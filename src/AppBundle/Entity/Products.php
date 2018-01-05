@@ -2,28 +2,30 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Products
+ *
+ * @ORM\Table(name="products")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductsRepository")
  */
 class Products
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
-     * @Assert\NotBlank(message="The field title cannot be empty")
-     */
-    private $code;
-
-    /**
-     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="The field title cannot be empty")
      * @Assert\Length(
      *      min = 4,
@@ -33,36 +35,49 @@ class Products
      * )
      * @Assert\Regex("/^[0-9a-zA-Z]+$/")
      */
-    private $name;
+    private $code;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="The field title cannot be empty")
      * @Assert\Length(
      *      min = 4,
      *      minMessage = "Your name must be at least 4 characters long"
      * )
      */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     */
     private $description;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="mark", type="string", length=255)
      * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $mark;
 
-     /**
-     * @ORM\ManyToOne(targetEntity="Products_Category", inversedBy="Products")
-     * @ORM\JoinColumn(name="category", referencedColumnName="id")
-     */
-    private $Products_Category;
-
     /**
      * @var float
+     *
+     * @ORM\Column(name="price", type="float")
      * @Assert\NotBlank(message="The field title cannot be empty")
-     * @Assert\Type(type="float", message="The value {{ value }} is not a valid {{ type }}.")
      */
     private $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Products_Category", inversedBy="products")
+     * @ORM\JoinColumn(name="category", nullable=false , referencedColumnName="id")
+     */
+    private $products_Category;
 
 
     /**

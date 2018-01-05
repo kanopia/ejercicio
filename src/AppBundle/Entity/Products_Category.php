@@ -3,57 +3,71 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Products_Category
+ *
+ * @ORM\Table(name="products__category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Products_CategoryRepository")
  */
 class Products_Category
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Regex("/^[0-9a-zA-Z]+$/")
      */
     private $code;
 
     /**
      * @var string
-     * @Assert\NotBlank(message="The field title cannot be empty")
-     * @Assert\Regex("/^[0-9a-zA-Z]+$/")
-     */
-    private $name;
-
-    /**
-     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      * @Assert\NotBlank(message="The field title cannot be empty")
      * @Assert\Length(
      *      min = 2,
      *      minMessage = "Your name must be at least 2 characters long"
      * )
      */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     */
     private $description;
 
     /**
-     * @var bool
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean")
      * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity="Products", mappedBy="Products_Category")
+     * @ORM\OneToMany(targetEntity="Products", mappedBy="products_category")
      */
-    private $Products;
+    private $products;
 
     public function __construct()
     {
-        $this->Products = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
 
@@ -156,7 +170,7 @@ class Products_Category
     /**
      * Get active
      *
-     * @return bool
+     * @return string
      */
     public function getActive()
     {
