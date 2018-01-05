@@ -1,49 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Product</h1>
-    
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ product.code }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Mark</th>
-                <td>{{ product.mark }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="col-xs-5 col-md-5">
+        <div class="box box-success">
+            <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Producto</div>
+            <div class="box-body">
 
-    <ul>
-        <li>
-            <a href="{{ path('products_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                <div class="col-xs-12 col-md-12">    
+
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ product.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Code</th>
+                                <td>{{ product.code }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ product.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ product.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Mark</th>
+                                <td>{{ product.mark }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>{{ product.price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="col-xs-5 col-md-5">    
+
+                        <a class="btn btn-block btn-info" href="{{ path('products_edit', { 'id': product.id }) }}">Editarlo</a>
+                    </div>
+                    <div class="col-xs-5 col-md-5">    
+                        {{ form_start(delete_form) }}
+                            <input class="btn btn-block btn-danger" type="submit" value="Borrar">
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+  
 {% endblock %}

@@ -1,44 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Products_category</h1>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ products_Category.id }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ products_Category.code }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ products_Category.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ products_Category.description }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{% if products_Category.active %}Yes{% else %}No{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="col-xs-5 col-md-5">
+        <div class="box box-success">
+            <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Categoria</div>
+            <div class="box-body">
 
-    <ul>
-        <li>
-            <a href="{{ path('products_category_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('products_category_edit', { 'id': products_Category.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                <div class="col-xs-12 col-md-12">    
+
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ products_Category.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Code</th>
+                                <td>{{ products_Category.code }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ products_Category.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ products_Category.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Active</th>
+                                <td>{% if products_Category.active %}Yes{% else %}No{% endif %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="col-xs-5 col-md-5">    
+
+                        <a class="btn btn-block btn-info" href="{{ path('products_category_edit', { 'id': products_Category.id }) }}">Editarlo</a>
+
+                    </div>
+                    <div class="col-xs-5 col-md-5">    
+                        {{ form_start(delete_form) }}
+                            <input class="btn btn-block btn-danger" type="submit" value="Delete">
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+  
 {% endblock %}

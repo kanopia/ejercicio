@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Product creation</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+<div class="col-xs-4 col-md-4">
+        <div class="box box-success">
+            <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Crear Producto</div>
+            <div class="box-body">
 
-    <ul>
-        <li>
-            <a href="{{ path('products_index') }}">Back to the list</a>
-        </li>
-    </ul>
+                <div class="col-xs-6 col-md-6">
+                    {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <br/>
+                        <input class="btn btn-block btn-info" type="submit" value="Crear" />
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+</div>
+
 {% endblock %}
