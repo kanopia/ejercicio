@@ -2,6 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 /**
  * Products_Category
  */
@@ -14,23 +19,42 @@ class Products_Category
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $code;
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Regex("/^[0-9a-zA-Z]+$/")
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Length(
+     *      min = 2,
+     *      minMessage = "Your name must be at least 2 characters long"
+     * )
      */
     private $description;
 
     /**
      * @var bool
+     * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $active;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Products", mappedBy="Products_Category")
+     */
+    private $Products;
+
+    public function __construct()
+    {
+        $this->Products = new ArrayCollection();
+    }
 
 
     /**

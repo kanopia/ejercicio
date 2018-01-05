@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 /**
  * Products
  */
@@ -14,26 +18,49 @@ class Products
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $code;
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Your name must be at least 4 characters long",
+     *      max = 10,
+     *      maxMessage = "Your name cannot be longer than 10 characters"
+     * )
+     * @Assert\Regex("/^[0-9a-zA-Z]+$/")
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Your name must be at least 4 characters long"
+     * )
      */
     private $description;
 
     /**
      * @var string
+     * @Assert\NotBlank(message="The field title cannot be empty")
      */
     private $mark;
 
+     /**
+     * @ORM\ManyToOne(targetEntity="Products_Category", inversedBy="Products")
+     * @ORM\JoinColumn(name="category", referencedColumnName="id")
+     */
+    private $Products_Category;
+
     /**
      * @var float
+     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\Type(type="float", message="The value {{ value }} is not a valid {{ type }}.")
      */
     private $price;
 
