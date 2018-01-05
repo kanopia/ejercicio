@@ -70,6 +70,28 @@ class Products_Category
         $this->products = new ArrayCollection();
     }
 
+    /**
+     * Set products
+     *
+     * @param  $products
+     * @return products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+        
+        return $this;
+    }
+    /**
+     * Get products
+     *
+     * @return products
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
 
     /**
      * Get id

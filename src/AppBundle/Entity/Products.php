@@ -80,6 +80,30 @@ class Products
     private $products_Category;
 
 
+    /** 
+    * Get products_Category
+    * 
+    * @return int
+    */
+
+    public function getProductsCategory(){
+
+        return $this->products_Category;
+    }
+
+    /**
+    * Set products_Category
+    * @param $products_Category
+    * 
+    * @return int
+    */
+    public function setProductsCategory($products_Category){
+
+        $this->products_Category = $products_Category;
+        
+        return $this;
+    }
+
     /**
      * Get id
      *
