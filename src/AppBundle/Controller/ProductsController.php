@@ -134,4 +134,145 @@ class ProductsController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * Displays a form to edit an existing product entity.
+     *
+     * @Route("/list/ajax", name="products_show_ajax")
+     * @Method("GET")
+     */
+
+    public function getProductsAjax(Request $request)
+    {
+        //var_dump($request->query->get('order')[0]['dir']); exit();
+    
+        ini_set('max_execution_time',0);
+
+        $f_i = $request->query->get('fecha_i');
+        $f_f = $request->query->get('fecha_f');
+    
+        $sEcho = $request->query->get('draw');
+        $iDisplayStart = $request->query->get('start');
+        $iDisplayLength = $request->query->get('length');
+
+        //Ordering
+        $iSortCol_0 = $request->query->get('iSortCol_0');
+        $iSortingCols = $request->query->get('iSortingCols');
+        $aColumns = array("p.id", "p.code", "p.name", "p.description", "p.mark", "p.category", "p.price");
+        
+        $sWhere = '';
+        $OrderD = 'ASC';
+        //Searching
+        $sSearch = $request->query->get('search')['value'];        
+        $OrderD = $request->query->get('order')[0]['dir'];
+
+        //Ordering
+        $sByColumn = $request->query->get('order')[0]['column'];
+
+        $bY = "p.id";
+        if($sByColumn == 0){
+
+            $bY="p.id";
+
+        }elseif($sByColumn == 1){
+
+            $bY="p.code";
+
+        }elseif($sByColumn == 2){
+
+            $bY="p.name";
+
+        }elseif($sByColumn == 3){
+
+            $bY="p.description";
+
+        }elseif($sByColumn == 4){
+
+            $bY="p.mark";
+
+        }elseif($sByColumn == 5){
+
+            $bY="p.category";
+
+        }elseif($sByColumn == 6){
+
+            $bY="p.price";
+        }        
+        
+        if ($sSearch != null && $sSearch != "")
+        {
+            if ($sWhere == '') {
+                $sWhere .= 'WHERE (';
+            } else {
+                $sWhere .= 'AND (';
+            }
+
+            for ($i = 0; $i < count($aColumns); $i++) {
+                $sWhere .= $aColumns[$i] . ' LIKE "%' . $sSearch . '%" OR ';
+            }
+
+            $sWhere = substr_replace($sWhere, '', -3);
+            $sWhere .= ')';
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery(
+            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price
+            FROM AppBundle:Products p "
+            . $sWhere . 
+            " ORDER BY "
+            . $bY . " " . $OrderD
+        );
+
+        $inventario = $query->setMaxResults($iDisplayLength)
+                            ->setFirstResult($iDisplayStart)
+                            ->getResult();
+
+
+        $query = $em->createQuery(
+            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price
+            FROM AppBundle:Products p "
+            . $sWhere . 
+            " ORDER BY "
+            . $bY . " " . $OrderD
+        );
+
+        $inventario2 = $query->getResult();
+
+        $filteredInventario = count($inventario);
+        $totalInventario    = count($inventario2);
+
+        $output = array(
+            "draw"            => $sEcho,
+            "recordsTotal"    => $filteredInventario,
+            "recordsFiltered" => $totalInventario,
+            "data"            => array(),
+        );
+       
+        foreach ($inventario as $inv)
+        {
+            $options    =   '<a class="btn btn-success" 
+                            href="/products/'.$inv['id'].'/edit">
+                                <i class="fa fa-edit"></i> Edit</a>'
+                            .' <a class="btn btn-success" href="/products/'.$inv['id'].'">
+                            <i class="fa fa-edit"></i> Ver</a>';
+
+            $row = array();          
+
+            $row[] = $inv['id'];
+            $row[] = $inv['code'];
+            $row[] = $inv['name'];
+            $row[] = $inv['description'];
+            $row[] = $inv['mark'];
+            $row[] = '1';
+            $row[] = $inv['price'];
+            $row[] = $options;
+
+            $output['data'][] = $row;
+
+        }
+
+        return $this->json($output);
+    }
 }

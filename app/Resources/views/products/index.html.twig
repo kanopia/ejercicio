@@ -1,47 +1,80 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Products list</h1>
+    <div class="col-xs-12 col-md-12">
+        <h1>Panel Productos</h1>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Mark</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td><a href="{{ path('products_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.mark }}</td>
-                <td>{{ product.price }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('products_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('products_edit', { 'id': product.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="col-xs-12 col-md-12">
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Lista de Productos</h3>
+            <div class="box-tools pull-right">
+                <a href="{{ path('products_new') }}" class="btn btn-primary"><i class="fa fa-list"></i>&nbsp;Crear Producto</a>
+            </div>
+        </div>
+        <div class="box-body">
+            <table id="list_products" class="table table-bordered table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Marca</th>
+                        <th>Categoria</th>
+                        <th>Precio</th>
+                        <th>Actiones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}
 
-    <ul>
-        <li>
-            <a href="{{ path('products_new') }}">Create a new product</a>
-        </li>
-    </ul>
+{% block js %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#list_products').DataTable( {
+            "language": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            "ajax": '{{ path('products_show_ajax') }}',
+            "deferRender":    false,
+            "processing":     true,
+            "scrollCollapse": true,
+            "scrollX":       true,
+            "scroller":       true,
+            "stateSave":      true,
+            "serverSide":   true
+        } );
+    });
+</script>
+
 {% endblock %}
