@@ -136,6 +136,54 @@ class ProductsController extends Controller
         ;
     }
 
+    
+
+    /**
+     * Displays a form to edit an existing product entity.
+     *
+     * @Route("/valProduct/ajax", name="val_product")
+     * @Method("GET")
+     */
+    public function validateProductAjax(Request $request){
+
+        $resCode = 0;
+        $resName = 0;
+
+        if ($request->isXmlHttpRequest()) {
+
+            $codeProd = $request->query->get('codeProd');
+            $nameProd = $request->query->get('nameProd');
+
+            if (!empty($codeProd)) {
+
+                $prodCode = $this->getDoctrine()
+                ->getRepository(Products::class)
+                ->findOneByCode($codeProd);
+
+                if (!$prodCode) {
+                    $resCode = 0;
+                }else{
+                    $resCode = 1;
+                }
+            }
+
+            if (!empty($nameProd)) {
+
+                $prodName = $this->getDoctrine()
+                ->getRepository(Products::class)
+                ->findOneByName($nameProd);
+
+                if (!$prodName) {
+                    $resName = 0;
+                }else{
+                    $resName = 1;
+                }
+            }
+
+        }
+        return $this->json(array('resCode' => $resCode , 'resName' => $resName));
+    }  
+
     /**
      * Displays a form to edit an existing product entity.
      *

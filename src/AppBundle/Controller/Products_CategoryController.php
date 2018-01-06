@@ -139,6 +139,52 @@ class Products_CategoryController extends Controller
     /**
      * Displays a form to edit an existing product entity.
      *
+     * @Route("/valCategory/ajax", name="val_category")
+     * @Method("GET")
+     */
+    public function validateCategoryAjax(Request $request){
+
+        $resCode = 0;
+        $resName = 0;
+
+        if ($request->isXmlHttpRequest()) {
+
+            $codeCat = $request->query->get('codeCat');
+            $nameCat = $request->query->get('nameCat');
+
+            if (!empty($codeCat)) {
+
+                $prodCode = $this->getDoctrine()
+                ->getRepository(Products_Category::class)
+                ->findOneByCode($codeCat);
+
+                if (!$prodCode) {
+                    $resCode = 0;
+                }else{
+                    $resCode = 1;
+                }
+            }
+
+            if (!empty($nameCat)) {
+
+                $prodName = $this->getDoctrine()
+                ->getRepository(Products_Category::class)
+                ->findOneByNameCat($nameCat);
+
+                if (!$prodName) {
+                    $resName = 0;
+                }else{
+                    $resName = 1;
+                }
+            }
+
+        }
+        return $this->json(array('resCode' => $resCode , 'resName' => $resName));
+    }  
+
+    /**
+     * Displays a form to edit an existing product entity.
+     *
      * @Route("/list/cat/ajax", name="categorias_show_ajax")
      * @Method("GET")
      */

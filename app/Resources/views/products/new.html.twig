@@ -3,20 +3,90 @@
 {% block body %}
 
 <div class="col-xs-4 col-md-4">
-        <div class="box box-success">
-            <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Crear Producto</div>
-            <div class="box-body">
-
-                <div class="col-xs-6 col-md-6">
-                    {{ form_start(form) }}
-                        {{ form_widget(form) }}
-                        <br/>
-                        <input class="btn btn-block btn-info" type="submit" value="Crear" />
-                    {{ form_end(form) }}
-                </div>
-            </div>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Crear Producto
         </div>
+        <div class="box-body">
+            <div class="col-xs-6 col-md-6">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <br/>
+                    <input class="btn btn-block btn-info" type="submit" value="Crear" id="create"/>
+                {{ form_end(form) }}
+            </div>
+        </div>            
+    </div>
+</div>
+<div class="col-xs-6 col-md-6">
+    <div class="alert alert-danger alert-dismissible hidden" id="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
+        <div id="result"></div>
+    </div>
 </div>
 
 {% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+                         
+      var codeProd;
+      var nameProd;
+             
+      //focus
+      $("#appbundle_products_code").focus();
+      $("#appbundle_products_name").focus();
+                                                 
+      //Validate Push Key
+      $("#appbundle_products_code, #appbundle_products_name").keyup(function(e){
+             //Get Values
+             codeProd = $("#appbundle_products_code").val();
+             nameProd = $("#appbundle_products_name").val();
+
+             //Search
+             $("#result").delay(1000).queue(function(n) {      
+                                           
+                  console.log(codeProd);
+                  console.log(nameProd);
+                                           
+                        $.ajax({
+                                method: "GET",
+                                url: "{{ path('val_product') }}?codeProd="+codeProd+"&nameProd="+nameProd,
+                                dataType: 'json',
+
+                              success: function(data){
+                                if(data['resCode'] == 1 ){
+                                    $("#result").html('<p>Este Codigo ya esta en uso!</p>');
+                                    $('#create').addClass('hidden');
+                                    $('#alert').removeClass('hidden');
+                                }
+
+                                if(data['resName'] == 1 ){
+                                    $("#result").html('<p>Este Nombre ya esta en uso!</p>');
+
+                                    $('#create').addClass('hidden');
+                                    $('#alert').removeClass('hidden');
+                                }
+
+                                if(data['resCode'] == 0 && data['resName'] == 0){
+                                    $('#create').removeClass('hidden');
+                                    $('#alert').addClass('hidden');
+                                }
+                                n();
+
+                              }
+                  });
+                                           
+             });
+                                
+      });
+                          
+});
+</script>
+
+{% endblock %}
+
