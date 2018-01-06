@@ -7,6 +7,44 @@
         <h1 class="box-title"><i class="fa fa-users"></i>¡BIENVENIDO!</h1>
         <i class="fa fa-chevron-circle-left"></i> En la barra lateral se encuentran las opciones disponibles!
    </div>
+   <div class="callout">
+        <h1 class="box-title"><i class="fa fa-pencil-square-o"></i>Documentación!</h1>
+        <h5>Versión del Symfony 3.4</h5>
+        <h5>Versión Base de Datos Mysql 5.0.12</h5>
+        <h5>Versión PHP 7.1.12</h5>
+        <ul>
+                <li>En la Raiz de la carpeta se encuentra el bash para la ejecucion de los schemas y Base de datos, nombre del archio "drop_and_load_database.sh".</li>
+
+                <li>Los Entity, estan ubicados en la ruta "src/AppBundle/Entity". se generaron con php bin/console generate:entity con el formato "Annotations", y cuentan con:
+                  <ul>
+                    <li>Las validaciones de doctrine @Assert por el lado del cliente.</li>
+                    <li>La creacion de los campos y sus atributos con @ORM.</li>
+                    <li>La relacion solicitada entre productos y sus categorias.</li>
+                    <li>Los metodos get y set, para cada una de las variables de las entitys.</li>
+                  </ul>
+                </li>
+                <li>Los Controller, estan ubicados en la ruta "src/AppBundle/Controller". se generaron con php bin/console generate:crud y cuentan con:</li>
+	                <ul>
+	                    <li>Cada funcion cuenta con el Route y su Metodo GET ó POST, ó ambos</li>
+	                    <li>Dentro de los controladores estan las funciones con las Doctrine ORM para las consultas, inserciones y eliminados para la data en la base de datos, todo por medio de las Entitys</li>
+	                    <li>Las funciones validate..Ajax son las que realiza la verificacion y la restriccion en los formularios de creacion de productos como de categorias, con el fin que no les permita crearlos con nombres o codigos ya existentes</li>
+	                    <li>Las funciones get..Ajax son las encargadas de consultar y enviar el resultado segun la busqueda que se ingrese o el orden de cada una de las columnas. el cual se lista por medio de DataTable de JQuery.</li>
+	                </ul>
+                <li>Los Form, estan almacenados en la ruta "src/AppBundle/Form", y cuentan con:</li>
+                	<ul>
+	                    <li>Se Adicion cada una de las columnas a ser insertadas por medio de las Entitys</li>
+	                    <li>Cuenta con las validaciones pertinentes ofrecidas por la documentacion de Symfony y los label personalizados</li>
+	                </ul>
+                <li>Las vistas se encuentran creadas en la ruta "app/Resources/views", y cuentan con:</li>
+                  <ul>
+                    <li>Para el tema de CSS y HTML se cargo la plantilla free de AdminLTE la cual trabaja por defecto con Bootstrap, esta almacenada en la ubicacion "web/", ahi se encuentran todos librerias de CSS como JS con las que cuenta la plantilla. Tambien cuenta con algunos ejemplos en la ruta "web/pages/examples".</li>
+                    <li>Cada una de las tablas cuenta con su carpeta que contienen los CRUD especificos.</li>
+                  </ul>
+              </ul>
+ 
+        <h4>Muchas Gracias!<i class="fa fa-thumbs-o-up"></i></h4>
+
+   </div>
 </div>
 {% endblock %}
 
