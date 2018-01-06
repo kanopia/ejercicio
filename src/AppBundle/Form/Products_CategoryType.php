@@ -13,7 +13,22 @@ class Products_CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code')->add('nameCat')->add('description')->add('active');
+        $builder->add('code', null, array(
+                                'label' => 'Codigo',
+                                'required' => true,
+                            ))
+                ->add('nameCat', null, array(
+                                'label' => 'Nombre',
+                                'required' => true,
+                                'attr' => array('minlength' => 2),
+                            ))
+                ->add('description', null, array(
+                                'label' => 'Descripción',
+                                'required' => true,
+                            ))
+                ->add('active', null, array(
+                                'label' => 'Activo',
+                            ));
     }/**
      * {@inheritdoc}
      */

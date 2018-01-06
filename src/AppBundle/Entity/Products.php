@@ -70,6 +70,8 @@ class Products
      *
      * @ORM\Column(name="price", type="float")
      * @Assert\NotBlank(message="El campo no puede estar vacio")
+     * @Assert\Type(type="float",
+     *              message="El valor {{ value }} no es permitido {{ type }}.")
      */
     private $price;
 

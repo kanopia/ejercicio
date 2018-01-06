@@ -89,7 +89,8 @@ class ProductsController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('products_edit', array('id' => $product->getId()));
+            //return $this->redirectToRoute('products_edit', array('id' => $product->getId()));
+            return $this->redirectToRoute('products_index');
         }
 
         return $this->render('products/edit.html.twig', array(
@@ -208,7 +209,7 @@ class ProductsController extends Controller
             if ($sWhere == '') {
                 $sWhere .= 'WHERE (';
             } else {
-                $sWhere .= 'AND (';
+                $sWhere .= ' AND (';
             }
             //concat colums of entity
             for ($i = 0; $i < count($aColumns); $i++) {

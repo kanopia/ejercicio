@@ -88,7 +88,9 @@ class Products_CategoryController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('products_category_edit', array('id' => $products_Category->getId()));
+            //return $this->redirectToRoute('products_category_edit', array('id' => $products_Category->getId()));
+            return $this->redirectToRoute('products_category_index');
+
         }
 
         return $this->render('products_category/edit.html.twig', array(
@@ -155,7 +157,7 @@ class Products_CategoryController extends Controller
         //Ordering
         $iSortCol_0 = $request->query->get('iSortCol_0');
         $iSortingCols = $request->query->get('iSortingCols');
-        $aColumns = array("c.id", "c.code", "c.name", "c.description", "c.active");
+        $aColumns = array("c.id", "c.code", "c.nameCat", "c.description", "c.active");
         
         //Where empty
         $sWhere = '';
@@ -181,7 +183,7 @@ class Products_CategoryController extends Controller
 
         }elseif($sByColumn == 2){
 
-            $bY="c.name";
+            $bY="c.nameCat";
 
         }elseif($sByColumn == 3){
 
@@ -207,7 +209,9 @@ class Products_CategoryController extends Controller
             }
 
             $sWhere = substr_replace($sWhere, '', -4);
-            $sWhere .= ')';
+            $sWhere .= ') ';
+
+
         }
 
         //Query for list with limit
@@ -258,13 +262,20 @@ class Products_CategoryController extends Controller
                             .' <a class="btn btn-success" href="/products_category/'.$inv['id'].'">
                             <i class="fa fa-edit"></i> Ver</a>';
 
+            $active = '';
+            if ($inv['active']) {
+                $active = 'Sí';
+            }else{
+                $active = 'No';
+            }
+
             $row = array();          
 
             $row[] = $inv['id'];
             $row[] = $inv['code'];
             $row[] = $inv['nameCat'];
             $row[] = $inv['description'];
-            $row[] = $inv['active'];
+            $row[] = $active;
             $row[] = $options;
 
             $output['data'][] = $row;

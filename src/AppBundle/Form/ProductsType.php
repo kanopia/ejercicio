@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
+
 class ProductsType extends AbstractType
 {
     /**
@@ -17,21 +20,38 @@ class ProductsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code')
-                ->add('name')
-                ->add('description')
-                ->add('mark')
-                ->add('price')
+        $builder->add('code', null, array(
+                                'label' => 'Codigo',
+                                'required' => true,
+                                'attr' => array('maxlength' => 10,
+                                                'minlength' => 4),
+                            ))
+                ->add('name', null, array(
+                                'label' => 'Nombre',
+                                'required' => true,
+                                'attr' => array('minlength' => 4,),
+                            ))
+                ->add('description', null, array(
+                                'label' => 'Descripción',
+                                'required' => true,
+                            ))
+                ->add('mark', null, array(
+                                'label' => 'Marca',
+                                'required' => true,
+                            ))
+                ->add('price', null, array(
+                                'label' => 'Precio',
+                                'required' => true,
+                                'attr'  =>  array('type' => 'float'),
+                            ))
                 ->add('products_Category', EntityType::class, array(
                                             // query choices from this entity
                                             'class' => 'AppBundle:Products_Category',
 
                                             // use the Products_Category.name property as the visible option string
                                             'choice_label' => 'nameCat',
-
-                                            // used to render a select box, check boxes or radios
-                                            // 'multiple' => true,
-                                            // 'expanded' => true,
+                                            'label'     =>  'Categorias',
+                                            'required' => true,
                                         ));
     }
     /**
