@@ -26,14 +26,14 @@ class Products
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, unique=true)
-     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\NotBlank(message="El campo no puede estar vacio")
      * @Assert\Length(
      *      min = 4,
-     *      minMessage = "Your name must be at least 4 characters long",
+     *      minMessage = "El codigo debe de contener al menos {{ limit }} digitos",
      *      max = 10,
-     *      maxMessage = "Your name cannot be longer than 10 characters"
+     *      maxMessage = "El codigo debe de contener un maximo de {{ limit }} digitos"
      * )
-     * @Assert\Regex("/^[0-9a-zA-Z]+$/")
+     * @Assert\Regex("/^[0-9a-zA-Z]+$/",message="Ingresa solo caracteres alfanumericos")
      */
     private $code;
 
@@ -41,10 +41,10 @@ class Products
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
-     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\NotBlank(message="El campo no puede estar vacio")
      * @Assert\Length(
      *      min = 4,
-     *      minMessage = "Your name must be at least 4 characters long"
+     *      minMessage = "El codigo debe de contener al menos {{ limit }} digitos"
      * )
      */
     private $name;
@@ -53,7 +53,7 @@ class Products
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
-     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\NotBlank(message="El campo no puede estar vacio")
      */
     private $description;
 
@@ -61,7 +61,7 @@ class Products
      * @var string
      *
      * @ORM\Column(name="mark", type="string", length=255)
-     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\NotBlank(message="El campo no puede estar vacio")
      */
     private $mark;
 
@@ -69,7 +69,7 @@ class Products
      * @var float
      *
      * @ORM\Column(name="price", type="float")
-     * @Assert\NotBlank(message="The field title cannot be empty")
+     * @Assert\NotBlank(message="El campo no puede estar vacio")
      */
     private $price;
 
@@ -78,6 +78,23 @@ class Products
      * @ORM\JoinColumn(name="category", nullable=false , referencedColumnName="id")
      */
     private $products_Category;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="category", type="integer")
+     */
+    private $category;
+
+     /**
+     * Get category
+     *
+     * @return int
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
 
     /** 

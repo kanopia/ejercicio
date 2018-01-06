@@ -157,8 +157,11 @@ class Products_CategoryController extends Controller
         $iSortingCols = $request->query->get('iSortingCols');
         $aColumns = array("c.id", "c.code", "c.name", "c.description", "c.active");
         
+        //Where empty
         $sWhere = '';
+        //Order predetermined
         $OrderD = 'ASC';
+
         //Searching
         $sSearch = $request->query->get('search')['value'];        
         $OrderD = $request->query->get('order')[0]['dir'];
@@ -166,6 +169,7 @@ class Products_CategoryController extends Controller
         //Ordering
         $sByColumn = $request->query->get('order')[0]['column'];
 
+        //Order according to colum
         $bY = "c.id";
         if($sByColumn == 0){
 
@@ -189,26 +193,28 @@ class Products_CategoryController extends Controller
 
         }       
         
+        //Validate search input
         if ($sSearch != null && $sSearch != "")
         {
             if ($sWhere == '') {
                 $sWhere .= 'WHERE (';
             } else {
-                $sWhere .= 'AND (';
+                $sWhere .= ' AND (';
             }
-
+            //concat colums of entity
             for ($i = 0; $i < count($aColumns); $i++) {
-                $sWhere .= $aColumns[$i] . ' LIKE "%' . $sSearch . '%" OR ';
+                $sWhere .= $aColumns[$i] . ' LIKE \'%' . $sSearch . '%\' OR ';
             }
 
-            $sWhere = substr_replace($sWhere, '', -3);
+            $sWhere = substr_replace($sWhere, '', -4);
             $sWhere .= ')';
         }
 
+        //Query for list with limit
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
-            "SELECT c.id, c.code, c.name, c.description, c.active
+            "SELECT c.id, c.code, c.nameCat, c.description, c.active
             FROM AppBundle:Products_Category c "
             . $sWhere . 
             " ORDER BY "
@@ -221,15 +227,17 @@ class Products_CategoryController extends Controller
 
 
         $query = $em->createQuery(
-            "SELECT c.id, c.code, c.name, c.description, c.active
+            "SELECT c.id, c.code, c.nameCat, c.description, c.active
             FROM AppBundle:Products_Category c "
             . $sWhere . 
             " ORDER BY "
             . $bY . " " . $OrderD
         );
 
+        //data total in DB
         $inventario2 = $query->getResult();
 
+        //count for list
         $filteredInventario = count($inventario);
         $totalInventario    = count($inventario2);
 
@@ -239,9 +247,11 @@ class Products_CategoryController extends Controller
             "recordsFiltered" => $totalInventario,
             "data"            => array(),
         );
-       
+        
+        //building array for table
         foreach ($inventario as $inv)
         {
+            //buttons for edit and view products
             $options    =   '<a class="btn btn-success" 
                             href="/products_category/'.$inv['id'].'/edit">
                                 <i class="fa fa-edit"></i> Edit</a>'
@@ -252,7 +262,7 @@ class Products_CategoryController extends Controller
 
             $row[] = $inv['id'];
             $row[] = $inv['code'];
-            $row[] = $inv['name'];
+            $row[] = $inv['nameCat'];
             $row[] = $inv['description'];
             $row[] = $inv['active'];
             $row[] = $options;

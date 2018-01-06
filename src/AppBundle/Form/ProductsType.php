@@ -27,7 +27,7 @@ class ProductsType extends AbstractType
                                             'class' => 'AppBundle:Products_Category',
 
                                             // use the Products_Category.name property as the visible option string
-                                            'choice_label' => 'name',
+                                            'choice_label' => 'nameCat',
 
                                             // used to render a select box, check boxes or radios
                                             // 'multiple' => true,

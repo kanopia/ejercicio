@@ -1,5 +1,24 @@
 {% extends 'base.html.twig' %}
 
+{% block css %}
+<style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+  </style>
+
+{% endblock %}
+
 {% block body %}
 
 <div class="col-xs-5 col-md-5">
@@ -44,13 +63,37 @@
                         <a class="btn btn-block btn-info" href="{{ path('products_edit', { 'id': product.id }) }}">Editarlo</a>
                     </div>
                     <div class="col-xs-5 col-md-5">    
-                        {{ form_start(delete_form) }}
-                            <input class="btn btn-block btn-danger" type="submit" value="Borrar">
-                        {{ form_end(delete_form) }}
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">Borrar                        
                     </div>
                 </div>
             </div>
         </div>
 </div>
+
+<!-- /.modal -->
+
+        <div class="modal modal-danger fade" id="modal-danger">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirmar</h4>
+              </div>
+              <div class="modal-body">
+                <p>Estas seguro que deseas eliminar este producto&hellip;</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                    {{ form_start(delete_form) }}
+                        <input class="btn btn-outline btn-danger" type="submit" value="Continuar!">
+                    {{ form_end(delete_form) }}
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
   
 {% endblock %}

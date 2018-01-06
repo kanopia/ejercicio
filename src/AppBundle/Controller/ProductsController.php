@@ -144,7 +144,6 @@ class ProductsController extends Controller
 
     public function getProductsAjax(Request $request)
     {
-        //var_dump($request->query->get('order')[0]['dir']); exit();
     
         ini_set('max_execution_time',0);
 
@@ -158,17 +157,22 @@ class ProductsController extends Controller
         //Ordering
         $iSortCol_0 = $request->query->get('iSortCol_0');
         $iSortingCols = $request->query->get('iSortingCols');
-        $aColumns = array("p.id", "p.code", "p.name", "p.description", "p.mark", "p.category", "p.price");
+        $aColumns = array("p.id", "p.code", "p.name", "p.description", "p.mark", "p.price", "c.nameCat");
         
-        $sWhere = '';
+        //List products whith categorys active
+        $sWhere = 'WHERE c.active=1 ';
+        //Order predetermined
         $OrderD = 'ASC';
+
         //Searching
-        $sSearch = $request->query->get('search')['value'];        
+        $sSearch = $request->query->get('search')['value'];
         $OrderD = $request->query->get('order')[0]['dir'];
 
         //Ordering
         $sByColumn = $request->query->get('order')[0]['column'];
 
+
+        //Order according to colum
         $bY = "p.id";
         if($sByColumn == 0){
 
@@ -192,13 +196,13 @@ class ProductsController extends Controller
 
         }elseif($sByColumn == 5){
 
-            $bY="p.category";
-
+            $bY="p.price";
         }elseif($sByColumn == 6){
 
-            $bY="p.price";
-        }        
+            $bY="c.nameCat";
+        }         
         
+        //Validate search input
         if ($sSearch != null && $sSearch != "")
         {
             if ($sWhere == '') {
@@ -206,22 +210,24 @@ class ProductsController extends Controller
             } else {
                 $sWhere .= 'AND (';
             }
-
+            //concat colums of entity
             for ($i = 0; $i < count($aColumns); $i++) {
-                $sWhere .= $aColumns[$i] . ' LIKE "%' . $sSearch . '%" OR ';
+                $sWhere .= $aColumns[$i] . ' LIKE \'%' . $sSearch . '%\' OR ';
             }
 
-            $sWhere = substr_replace($sWhere, '', -3);
+            $sWhere = substr_replace($sWhere, '', -4);
             $sWhere .= ')';
         }
 
+        //Query for list with limit
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
-            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price
-            FROM AppBundle:Products p "
-            . $sWhere . 
-            " ORDER BY "
+            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price, c.nameCat
+            FROM AppBundle:Products p 
+            JOIN p.products_Category c "
+            . $sWhere  
+            ." ORDER BY "
             . $bY . " " . $OrderD
         );
 
@@ -229,10 +235,13 @@ class ProductsController extends Controller
                             ->setFirstResult($iDisplayStart)
                             ->getResult();
 
+        //var_dump($inventario); exit();
 
+        //data total in DB
         $query = $em->createQuery(
-            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price
-            FROM AppBundle:Products p "
+            "SELECT p.id, p.code, p.name, p.description, p.mark, p.price, c.nameCat
+            FROM AppBundle:Products p 
+            JOIN p.products_Category c "
             . $sWhere . 
             " ORDER BY "
             . $bY . " " . $OrderD
@@ -240,6 +249,7 @@ class ProductsController extends Controller
 
         $inventario2 = $query->getResult();
 
+        //count for list
         $filteredInventario = count($inventario);
         $totalInventario    = count($inventario2);
 
@@ -249,9 +259,11 @@ class ProductsController extends Controller
             "recordsFiltered" => $totalInventario,
             "data"            => array(),
         );
-       
+        
+        //building array for table
         foreach ($inventario as $inv)
         {
+            //buttons for edit and view products
             $options    =   '<a class="btn btn-success" 
                             href="/products/'.$inv['id'].'/edit">
                                 <i class="fa fa-edit"></i> Edit</a>'
@@ -265,7 +277,7 @@ class ProductsController extends Controller
             $row[] = $inv['name'];
             $row[] = $inv['description'];
             $row[] = $inv['mark'];
-            $row[] = '1';
+            $row[] = $inv['nameCat'];
             $row[] = $inv['price'];
             $row[] = $options;
 

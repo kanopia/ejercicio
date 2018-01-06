@@ -34,7 +34,7 @@
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 
-  {% block stylesheets %} {% endblock %}
+  {% block css %} {% endblock %}
   
 </head>
 <body class="hold-transition skin-purple sidebar-mini">
@@ -43,7 +43,7 @@
 
     <header class="main-header">
       <!-- Logo -->
-      <a href="index2.html" class="logo">
+      <a href="{{ path('homepage') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>P</b>rod</span>
         <!-- logo for regular state and mobile devices -->
@@ -87,12 +87,8 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">Opciones de Men&uacute;</li>
-          <!--li class="active">
-            <a href="{{ path('homepage') }}">
-              <i class="fa fa-dashboard"></i> <span>Panel</span>
-            </a>
-          </li-->
-          <li class="active">
+          
+          <li class="">
             <a href="{{ path('products_index') }}">
               <i class="fa fa-cart-plus"></i> <span>Productos</span>
             </a>
@@ -104,19 +100,6 @@
             </a>
           </li>
           
-          <!--li class="treeview">
-            <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Usuarios</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href=""><i class="fa fa-circle-o"></i> Crear Usuario</a></li>
-              
-              <li class="active"><a href=""><i class="fa fa-circle-o"></i> Listar Usuarios</a></li>
-            </ul>
-          </li-->
         </ul>
       </section>
       <!-- /.sidebar -->
@@ -124,11 +107,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-        {% block migas %} {% endblock %}
-      </section>
-
+      
       <!-- Main content -->
       <section class="content">
         <!-- Small boxes (Stat box) -->
